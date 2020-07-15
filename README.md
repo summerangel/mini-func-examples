@@ -1,0 +1,1 @@
+a collection of mini function examples

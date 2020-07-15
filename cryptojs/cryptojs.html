@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<div>test page </div>
+<!-- <script src="./CryptoJS v3.1.2/components/aes.js"></script> -->
+<script src="./CryptoJS v3.1.2/rollups/aes.js"></script>
+<body>
+  <p>加密：<span id='text'></span></p>
+  <p>解密：<span id='end'></span></p>
+</body>
+<script>
+const text = '55aaf1d59a4827df0509';
+const key = CryptoJS.enc.Utf8.parse('summers4IOUJ5F1IOs5ajfA4j3d1SF1J')
+const iv = CryptoJS.enc.Utf8.parse('')
+
+    var encrypted = CryptoJS.AES.encrypt(text, key, {	
+		iv: iv,
+		mode: CryptoJS.mode.CBC,
+		padding: CryptoJS.pad.Pkcs7
+   });
+   
+   var decryptedVal = CryptoJS.AES.decrypt('Xa8xB6H10dFCotkUrVQ4yzVqfbHeNln2iXUuN8tZV9w=', key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+ document.getElementById('text').innerHTML = encrypted.toString();
+ document.getElementById('end').innerHTML = decryptedVal.toString(CryptoJS.enc.Utf8);
+
+
+
+//  const key = 'summers4IOUJ5F1IOs5ajfA4j3d1SF1J'
+// const iv = ''
+
+// // 加密
+// function Encrypt (text) {
+//   return CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(key), {
+//     iv: CryptoJS.enc.Utf8.parse(iv),
+//     mode: CryptoJS.mode.CBC,
+//     padding: CryptoJS.pad.Pkcs7
+//   }).toString()
+// }
+
+// // 解密
+// function Decrypt (text) {
+//   let decrypted = CryptoJS.AES.decrypt(text, CryptoJS.enc.Utf8.parse(key), {
+//     iv: CryptoJS.enc.Utf8.parse(iv),
+//     mode: CryptoJS.mode.CBC,
+//     padding: CryptoJS.pad.Pkcs7
+//   })
+//   return decrypted.toString(CryptoJS.enc.Utf8)
+// }
+
+// let text = Encrypt('55aaf1d59a4827df0509')
+// console.log(text)
+// console.log(Decrypt(text))
+   
+</script>
+</html>

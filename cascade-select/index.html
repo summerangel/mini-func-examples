@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="sitedata.js"></script>
+    <script type="text/javascript">
+        var globalGid = '';
+        $(document).ready(function () {
+            createOptions('gid', testInfo);
+            createEvent('gid', testInfo);
+        });
+
+        function createEvent(id, arr) {
+            var elem = $('#' + id);
+            elem.change(function (e) {
+                var label = elem.val();
+                checkIsAny = label.indexOf('any') > -1;
+                var children;
+                if (checkIsAny) {
+                    label = label.split('_')[1];
+                }
+                if (checkIsAny) {
+                    removeSelect(arr);
+                    globalGid = label;
+                    return;
+                }
+                for (var index in arr) {
+                    if (arr[index]["id"] == label) {
+                        children = arr[index]["children"];
+                        removeSelect(arr);
+                        globalGid = label;
+                        if (!checkIsAny && children && children.length > 0) {
+                            createSelect(label);
+                            createOptions(label, children);
+                            createEvent(label, children);
+                        }
+                        break;
+                    }
+                }
+            })
+        }
+
+        function findPid(c_id, arr) {
+            var id = c_id.indexOf('any') > -1 ? c_id.split('_')[1] : c_id;
+            if (arr && arr.length > 0) {
+                for (var i = 0; i< arr.length; i++) {
+                    if (arr[i].id == id) {
+                        return arr[i].pid;
+                    } else {
+                        findPid(c_id, arr[i].children);
+                    }
+                }
+            }
+        }
+
+        function createSelect(id) {
+            var element = document.getElementById('gidWrap');
+            var fragment = document.createDocumentFragment();
+            var mySelect = document.createElement('select');
+            mySelect.id = id;
+            fragment.appendChild(mySelect);
+            element.appendChild(fragment);
+        }
+
+        function createOptions(id, arr) {
+            var provSelector = $("#" + id);
+            provSelector.empty();
+            provSelector.append("<option value='any_" + id + "'>--请选择--</option>")
+            for (var index in arr) {
+                provSelector.append("<option value='" + arr[index]["id"] + "'>" + arr[index]["name"] + "</option>")
+            }
+        }
+
+        function removeSelect(arr) {
+            for (var i in arr) {
+                var pEle = document.getElementById(arr[i]["id"]);
+                var element = document.getElementById('gidWrap');
+                if (pEle) {
+                    element.removeChild(pEle);
+                }
+                if (arr[i]["children"] && arr[i]["children"].length > 0) {
+                    removeSelect(arr[i]["children"]);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="gidWrap">
+    <select id="gid"></select>
+</div>
+</body>
+</html>
